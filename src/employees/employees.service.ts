@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Logger, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 
 @Injectable()
 export class EmployeesService {
+  private readonly logger = new Logger(EmployeesService.name)
   constructor(private readonly dataBaseService: DatabaseService) {}
 
   async create(createEmployeeDto: Prisma.EmployeeCreateInput) {
@@ -13,6 +14,7 @@ export class EmployeesService {
   }
 
   async findAll(role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
+    this.logger.log("Getting all")
     if (role) {
       return this.dataBaseService.employee.findMany({
       where: {
